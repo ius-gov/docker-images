@@ -1,4 +1,5 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:2.1 AS build
+# info from https://nodejs.org/dist/v10.15.3/SHASUMS256.txt.asc
 ENV NODE_VERSION 10.15.3
 ENV NODE_DOWNLOAD_SHA 6c35b85a7cd4188ab7578354277b2b2ca43eacc864a2a16b3669753ec2369d52
 
