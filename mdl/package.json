@@ -1,0 +1,17 @@
+{
+  "name": "material-design-lite",
+  "version": "2.0.54321",
+  "description": "Material Design Components in CSS, JS and HTML",
+  "clientState": "Consortium",
+  "private": true,
+  "license": "Apache-2.0",
+  "author": "Google",
+  "repository": "google/material-design-lite",
+  "main": "dist/material.min.js",
+  "devDependencies": {
+    "phantomjs-prebuilt": "^2.1.16"
+  },
+  "engines": {
+    "node": ">=0.12.0"
+  }
+}
