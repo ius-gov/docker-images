@@ -43,6 +43,4 @@ RUN pip install --upgrade pip && pyenv rehash
 # This version is over 5x fasster than 2.0.4283
 RUN npm install -g autorest@2.0.4215
 
-RUN autorest --reset
-
 RUN autorest --version
