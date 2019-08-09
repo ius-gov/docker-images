@@ -3,10 +3,10 @@ appVersion: '1.0'
 description: {{helmName}} Helm Chart
 name: {{helmName}}
 version: 0.0.0-INTERNAL
-source:
+sources:
   - {{sourceUrl}}
 keywords:
-  - SHA:{{sourceSHA}}
+  - CommitHash:{{sourceSHA}}
   - RepositryID:{{repositoryID}}
   - RepositoryName:{{repositoryName}}
   - TeamProjectID:{{teamProjectID}}
