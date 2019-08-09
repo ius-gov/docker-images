@@ -6,7 +6,7 @@ version: 0.0.0-INTERNAL
 sources:
   - {{sourceUrl}}
 keywords:
-  - SHA:{{sourceSHA}}
+  - CommitHash:{{sourceSHA}}
   - RepositryID:{{repositoryID}}
   - RepositoryName:{{repositoryName}}
   - TeamProjectID:{{teamProjectID}}
