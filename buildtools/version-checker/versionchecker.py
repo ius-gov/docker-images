@@ -19,8 +19,6 @@ def check_target_version(target):
         target_version = m.group(1)
         if version.parse(target_version) >= version.parse("2.2"):
             raise("\tTarget %s is invalid.  We do not support anything greater than or equal to 2.2" % target_version)
-        else:
-            print("\tTarget %s is valid." % target_version)
 
 
 def check_dependency(dependency, semversion, banned_versions):
@@ -47,17 +45,19 @@ def check_package(packageKey, package, banned_versions):
     package_array = packageKey.split("/")
     package_name = package_array[0]
     package_version = package_array[1]
-    passed = check_dependency(package_name, version.parse(package_version), banned_versions)
+    check_response = check_dependency(package_name, version.parse(package_version), banned_versions)
     error_messages = []
-    if not passed:
-        return
+    if check_response["passed"] == False:
+        print("\tBanned Version Found in %s (%s)" % (package_name, package_version))
+        print(check_response["message"])
+        error_messages.append(check_response["message"])
     if "dependencies" in package:
         for dependency in package["dependencies"]:
-            check_resposne = check_dependency(dependency, version.parse(package["dependencies"][dependency]), banned_versions)
-            if check_resposne["passed"] == False:
+            check_response = check_dependency(dependency, version.parse(package["dependencies"][dependency]), banned_versions)
+            if check_response["passed"] == False:
                 print("\tBanned Version Found in %s (%s)" % (package_name, package_version))
-                print(check_resposne["message"])
-                error_messages.append(check_resposne["message"])
+                print(check_response["message"])
+                error_messages.append(check_response["message"])
     
     return error_messages
 
@@ -77,9 +77,9 @@ def find_banned_versions(project_assets, banned_versions):
 
 if __name__ == "__main__":
     banned_versions = load_banned_versions()
+    if len(sys.argv < 2:
+        raise("The first argument of where the project.assets.json is must be provided")
     project_assets = load_project_assets(sys.argv[1])
-    #print(banned_versions)
-    #print(project_assets)
     print("Checking for banned versions")
     error_messages = find_banned_versions(project_assets, banned_versions)
     if len(error_messages) > 0:
