@@ -1,0 +1,10 @@
+{
+    "IdentityModel" : {
+        "MustBe" : "LessThan",
+        "Version" : "4.0.0"
+    },
+    "IdentityServer4" : {
+        "MustBe" : "LessThan",
+        "Version" : "3.0.0"
+    }
+}
