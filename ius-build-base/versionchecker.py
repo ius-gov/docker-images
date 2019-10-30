@@ -54,7 +54,7 @@ def check_package(packageKey, package, banned_versions):
         error_messages.append(check_response["message"])
     if "dependencies" in package:
         for dependency in package["dependencies"]:
-            print("\tChecking %s" % dependency)
+            #print("\tChecking %s" % dependency)
             check_response = check_dependency(dependency, version.parse(package["dependencies"][dependency]), banned_versions)
             if check_response["passed"] == False:
                 print("\tBanned Version Found in %s (%s)" % (package_name, package_version))
@@ -84,13 +84,13 @@ def run(project_asset_file):
     error_messages = find_banned_versions(project_assets, banned_versions)
     if len(error_messages) > 0:
         print("=====\nBanned Packages Found\n=====")
-        exit(1)
-    exit(0)
+        return 1
+    return 0
 
 if __name__ == "__main__":
     
     if len(sys.argv) < 2:
         raise ValueError("The first argument of where the project.assets.json is must be provided")
-    run(sys.argv[1])
+    exit(run(sys.argv[1]))
     
     
