@@ -1,10 +1,11 @@
+import os
 import json
 from packaging import version
 import re
 import sys
 
 def load_banned_versions():
-    with open("bannedversions.json") as f:
+    with open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "bannedversions.json")) as f:
         return json.load(f)
 
 def load_project_assets(project_file):
@@ -53,6 +54,7 @@ def check_package(packageKey, package, banned_versions):
         error_messages.append(check_response["message"])
     if "dependencies" in package:
         for dependency in package["dependencies"]:
+            print("\tChecking %s" % dependency)
             check_response = check_dependency(dependency, version.parse(package["dependencies"][dependency]), banned_versions)
             if check_response["passed"] == False:
                 print("\tBanned Version Found in %s (%s)" % (package_name, package_version))
@@ -75,17 +77,20 @@ def find_banned_versions(project_assets, banned_versions):
 
     return error_messages
 
-
-if __name__ == "__main__":
+def run(project_asset_file):
     banned_versions = load_banned_versions()
-    if len(sys.argv) < 2:
-        raise ValueError("The first argument of where the project.assets.json is must be provided")
-    project_assets = load_project_assets(sys.argv[1])
+    project_assets = load_project_assets(project_asset_file)
     print("Checking for banned versions")
     error_messages = find_banned_versions(project_assets, banned_versions)
     if len(error_messages) > 0:
         print("=====\nBanned Packages Found\n=====")
         exit(1)
     exit(0)
+
+if __name__ == "__main__":
+    
+    if len(sys.argv) < 2:
+        raise ValueError("The first argument of where the project.assets.json is must be provided")
+    run(sys.argv[1])
     
     
