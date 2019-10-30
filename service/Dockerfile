@@ -1,1 +1,1 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:2.1 AS build
+FROM iusdev.azurecr.io/ius-build-base:latest AS build
