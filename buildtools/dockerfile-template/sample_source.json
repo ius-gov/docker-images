@@ -1,0 +1,7 @@
+{
+    "projects": [
+        "src/project1",
+        "src/project2"
+    ],
+    "entry_project" : "project1"
+}
