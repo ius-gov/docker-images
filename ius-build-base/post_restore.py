@@ -1,6 +1,8 @@
 import sys
 from pathlib import Path
 import versionchecker
+import argparse
+import logging
 
 def get_project_assets_files(base_path):
     files = []
@@ -11,8 +13,24 @@ def get_project_assets_files(base_path):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        raise ValueError("The first argument must be the base folder to check")
-    files = get_project_assets_files(sys.argv[1])
+    parser = argparse.ArgumentParser(description="iUS Version Checker")
+    parser.add_argument("--base_path", type=str, help="The base path to search for project.assets.json files")
+    parser.add_argument("--state_code", type=int, nargs='+', help="The expected state code allowed")
+    parser.add_argument("--log_level", type=str, choices=["info", "debug", "warning"], default="info")
+    args = parser.parse_args()
+
+    # Always allow state code 0
+    allowed_ius_state_codes = [0]
+    for state_code in args.state_code:
+        if state_code not in allowed_ius_state_codes:
+            allowed_ius_state_codes.append(state_code)
+
+    log_level = logging.INFO
+    if args.log_level == "debug":
+        log_level = logging.DEBUG
+    if args.log_level == "warning":
+        log_level = logging.WARNING
+
+    files = get_project_assets_files(args.base_path)
     for file in files: 
-        versionchecker.run(file)
+        versionchecker.run(file, allowed_ius_state_codes, log_level)
