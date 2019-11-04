@@ -24,10 +24,10 @@ RUN dotnet restore {{entry_project}}
 RUN python /data/post_restore.py --base_path /src --state_code {{state_code}}
 
 COPY . .
-RUN dotnet build "{{entry_project}}.csproj" -c Release -o /app
+RUN dotnet build "{{entry_project}}.csproj" -c Release -o /app --no-restore
 
 FROM build AS publish
-RUN dotnet publish "{{entry_project}}.csproj" -c Release -o /app
+RUN dotnet publish "{{entry_project}}.csproj" -c Release -o /app --no-build
 
 FROM base AS final
 WORKDIR /app
