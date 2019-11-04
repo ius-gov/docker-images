@@ -7,16 +7,21 @@ FROM iusdev.azurecr.io/web-build:latest AS build
 ARG version=0.0.0
 WORKDIR /src
 COPY ["NuGet.Config", "src/"]
+
 {{#projects}}
+    # Triple braces to prevent html escaping of slashes
+    RUN echo "Copying {{{.}}}"
     COPY {{{.}}}/*.csproj {{{.}}}/
 {{/projects}}
 
-RUN echo "Setting Version To $version"
-RUN find src/ -type f -iname '*.csproj' -exec  sed -i "s/0\.0\.0\-INTERNAL/$version/g" "{}" \;
-RUN grep "<VersionPrefix>.*</VersionPrefix>" -R .
+RUN echo "Setting Version To $version" &&
+    find src/ -type f -iname '*.csproj' -exec  sed -i "s/0\.0\.0\-INTERNAL/$version/g" "{}" \; &&
+    grep "<VersionPrefix>.*</VersionPrefix>" -R .
 
 WORKDIR "src/{{entry_project}}"
 RUN dotnet restore {{entry_project}}
+
+RUN python /data/post_restore.py --base_path /src --state_code {{state_code}}
 
 COPY . .
 RUN dotnet build "{{entry_project}}.csproj" -c Release -o /app
