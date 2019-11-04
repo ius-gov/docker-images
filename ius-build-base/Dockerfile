@@ -44,5 +44,6 @@ RUN pip install --upgrade pip && pyenv rehash
 COPY ./bannedversions.json /data/
 COPY ./versionchecker.py /data/
 COPY ./requirements.txt /data/
+COPY ./post_restore.py /data
 
 RUN pip install -r /data/requirements.txt
