@@ -1,0 +1,8 @@
+{
+    "projects": [
+        "src/project1",
+        "src/project2"
+    ],
+    "entry_project" : "project1",
+    "state_code" : 0
+}
