@@ -1,5 +1,5 @@
-FROM iusdev.azurecr.io/ius-build-base:latest AS build
+FROM node
 
 RUN npm install -g mustache
 
-COPY Dockerfile.mustache /data
+COPY Dockerfile.mustache /data/
