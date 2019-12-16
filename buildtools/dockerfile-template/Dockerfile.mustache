@@ -16,18 +16,18 @@ RUN echo "Setting Version To $version" && \
     find src/ -type f -iname '*.csproj' -exec  sed -i "s/0\.0\.0\-INTERNAL/$version/g" "{}" \; && \
     grep "<VersionPrefix>.*</VersionPrefix>" -R .
 
-WORKDIR "src/{{entry_project}}"
-RUN dotnet restore {{entry_project}}.csproj
+WORKDIR src/{{entry_project_directory}}
+RUN dotnet restore {{entry_project_name}}.csproj
 
 RUN python /data/post_restore.py --base_path $(pwd) --state_code {{state_code}}
 
 COPY . .
-RUN dotnet build "{{entry_project}}.csproj" -c Release -o /app --no-restore
+RUN dotnet build "{{entry_project_name}}.csproj" -c Release -o /app --no-restore
 
 FROM build AS publish
-RUN dotnet publish "{{entry_project}}.csproj" -c Release -o /app --no-build
+RUN dotnet publish "{{entry_project_name}}.csproj" -c Release -o /app --no-build
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "{{entry_project}}.dll"]
+ENTRYPOINT ["dotnet", "{{entry_project_name}}.dll"]

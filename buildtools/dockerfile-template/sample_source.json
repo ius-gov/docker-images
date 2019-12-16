@@ -3,6 +3,7 @@
         "src/project1",
         "src/project2"
     ],
-    "entry_project" : "project1",
+    "entry_project_directory" : "src/project1",
+    "entry_project_name" : "project1",
     "state_code" : 0
 }
