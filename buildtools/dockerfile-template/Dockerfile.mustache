@@ -22,7 +22,7 @@ RUN python /data/post_restore.py --base_path $(pwd) --state_code {{state_code}}
 
 COPY . .
 WORKDIR {{{entry_project_directory}}}
-RUN dotnet build "{{entry_project_name}}.csproj" -c Release -o /app --no-restore
+RUN dotnet build "{{entry_project_name}}.csproj" -c Release --no-restore
 
 FROM build AS publish
 RUN dotnet publish "{{entry_project_name}}.csproj" -c Release -o /app --no-build
