@@ -32,5 +32,10 @@ if __name__ == "__main__":
         log_level = logging.WARNING
 
     files = get_project_assets_files(args.base_path)
+    exit_code = 0
     for file in files: 
-        versionchecker.run(file, allowed_ius_state_codes, log_level)
+        check_result = versionchecker.run(file, allowed_ius_state_codes, log_level)
+        # find the max exit code
+        if check_result > exit_code:
+            exit_code = check_result
+    exit(exit_code)
