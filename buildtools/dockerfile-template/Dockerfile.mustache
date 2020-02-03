@@ -30,4 +30,9 @@ RUN dotnet publish "{{entry_project_name}}.csproj" -c Release -o /app --no-build
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "{{entry_project_dll_name || entry_project_name}}.dll"]
+{{#entry_project_dll_name}}
+ENTRYPOINT ["dotnet", "{{entry_project_dll_name}}.dll"]
+{{/entry_project_dll_name}}
+{{^entry_project_dll_name}}
+ENTRYPOINT ["dotnet", "{{entry_project_name}}.dll"]
+{{/entry_project_dll_name}}
