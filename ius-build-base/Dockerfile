@@ -40,6 +40,8 @@ RUN pyenv install $PYTHON_VERSION
 RUN pyenv global $PYTHON_VERSION
 RUN pip install --upgrade pip && pyenv rehash
 
+# We need libgdiplus, libc6-dev packages for Aspec pdf library to work on docker containers. Reference https://github.com/JanKallman/EPPlus/issues/83
+RUN apt-get update && apt-get install -y apt-utils libgdiplus libc6-dev
 
 COPY ./bannedversions.json /data/
 COPY ./versionchecker.py /data/
