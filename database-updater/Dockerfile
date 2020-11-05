@@ -1,4 +1,4 @@
-FROM sqlpackage-azurecli-base:latest 
+FROM iusdev.azurecr.io/sqlpackage-azurecli-base:latest 
 
 COPY . .
 RUN chmod +x applydacpac.sh
