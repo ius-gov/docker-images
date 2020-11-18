@@ -6,12 +6,21 @@
 # -U "${SQL_SERVER_USERNAME}" \
 # -P "${SQL_SERVER_PASSWORD}"
 
+# Doing az devops login to download the artifcat from feed
+echo ${PAT_TOKEN} | az devops login
+
+az artifacts universal download \
+--organization ${AZURE_URL} \ 
+--feed ${FEED} \
+--name ${PROJECT} \
+--version ${VERSION} \
+--path /dacpac
 if [ $? -eq 0 ];
 then
-      echo "[INFO] Successfully logged in with credentials"
+   echo "[INFO] Successfully logged in with credentials"
 elif [ $? -eq 401 ];
 then
-echo "[ERR] Unauthorized .Please check the credentials and try again"
+   echo "[ERR] Unauthorized .Please check the credentials and try again"
 exit 1
 else
    echo "[INFO] Failed to publish dacpac to sql database,Check the logs to debug the issue"
