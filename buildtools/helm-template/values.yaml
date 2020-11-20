@@ -6,7 +6,7 @@ image:
   repository: {{imageRepository}}.azurecr.io/{{imageName}}
   tag: 0.0.0-INTERNAL
   databaseName: "testbatabase"
-  dapacVersion: {{dacpacVersion}}
+  dapacVersion: 0.0.0-INTERNAL
 
 
 nameOverride: ""
