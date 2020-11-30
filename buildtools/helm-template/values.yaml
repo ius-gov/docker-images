@@ -17,3 +17,4 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+enableDacPac: true
