@@ -11,7 +11,7 @@ def GetDatabaseCatalog(appsettingsFilePath, CannonicalApplicationName):
         return re.split(';', re.split(r'Catalog=', connectionString)[1])[0]
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser
+    parser = argparse.ArgumentParser()
     parser.add_argument('--appsettingsFilePath',type=str, required=True)
     parser.add_argument('--CannonicalApplicationName', type=str,required=True)
     args = parser.parse_args()
