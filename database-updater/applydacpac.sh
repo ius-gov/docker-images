@@ -27,9 +27,12 @@ checkstatus $?
 #Applying Dacpac present to database
 echo "Running SQL Package Command"
 
-cd /dacpac/DacPac/
+cd /dacpac/
+foldername=$(ls)
+cd /dacpac/${foldername}/
 dacpacFilename=`ls | grep -i ".dacpac"`
+folderpath=$(pwd)
 
 echo $dacpacFilename
-/opt/sqlpackage/sqlpackage /Action:Publish /SourceFile:"/dacpac/DacPac/${dacpacFilename}" /TargetServerName:"${SQL_SERVER_URL},${SQL_SERVER_PORT}" /TargetDatabaseName:"${SERVICE_DATABASE_NAME}" /TargetUser:"${SQL_USERNAME}" /TargetPassword:"${SQL_PASSWORD}" /p:AllowIncompatiblePlatform=true /p:BlockOnPossibleDataLoss=false /TargetTimeout:120
+/opt/sqlpackage/sqlpackage /Action:Publish /SourceFile:"$folderpath/$dacpacFilename" /TargetServerName:"${SQL_SERVER_URL},${SQL_SERVER_PORT}" /TargetDatabaseName:"${SERVICE_DATABASE_NAME}" /TargetUser:"${SQL_USERNAME}" /TargetPassword:"${SQL_PASSWORD}" /p:AllowIncompatiblePlatform=true /p:BlockOnPossibleDataLoss=false /TargetTimeout:120
 checkstatus $?
