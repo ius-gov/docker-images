@@ -11,6 +11,20 @@ RUN wget -progress=bar:force -q -O sqlpackage.zip https://go.microsoft.com/fwlin
     && chmod +x /opt/sqlpackage/sqlpackage \
     && rm sqlpackage.zip 
 ENV PATH="/opt/sqlpackage/:${PATH}"
+
+# If we have dotnet installed this seems to be the best way
+RUN dotnet tool install --global seqcli
+
+# More manual way of installing seqcli
+# RUN wget -q -O seqcli.tar.gz https://github.com/datalust/seqcli/releases/download/v2020.4.365/seqcli-2020.4.365-linux-x64.tar.gz \
+#     && tar -xf seqcli.tar.gz -C /opt \
+#     && SEQDIR=$(ls /opt | grep -m 1 seqcli) \
+#     && chmod +x /opt/$SEQDIR/seqcli \
+#     && alias seqcli=/opt/$SEQDIR/seqcli \
+#     && rm seqcli.tar.gz
+
+RUN seqcli config -k connection.serverUrl -v $SEQ_SERVER
+
 #Install Azure CLI for access to universal packages
 RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash && apt-get clean up all the garbage leftover
 
