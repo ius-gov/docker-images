@@ -23,7 +23,8 @@ RUN dotnet tool install --global seqcli
 #     && alias seqcli=/opt/$SEQDIR/seqcli \
 #     && rm seqcli.tar.gz
 
-RUN seqcli config -k connection.serverUrl -v $SEQ_SERVER
+ARG SEQ_URL="http://seq.ius-infrastructure.svc.cluster.local:5341"
+RUN seqcli config -k connection.serverUrl -v $SEQ_URL
 
 #Install Azure CLI for access to universal packages
 RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash && apt-get clean up all the garbage leftover
