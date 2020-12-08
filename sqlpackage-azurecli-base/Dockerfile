@@ -12,16 +12,15 @@ RUN wget -progress=bar:force -q -O sqlpackage.zip https://go.microsoft.com/fwlin
     && rm sqlpackage.zip 
 ENV PATH="/opt/sqlpackage/:${PATH}"
 
-# If we have dotnet installed this seems to be the best way
-RUN dotnet tool install --global seqcli
-
 # More manual way of installing seqcli
-# RUN wget -q -O seqcli.tar.gz https://github.com/datalust/seqcli/releases/download/v2020.4.365/seqcli-2020.4.365-linux-x64.tar.gz \
-#     && tar -xf seqcli.tar.gz -C /opt \
-#     && SEQDIR=$(ls /opt | grep -m 1 seqcli) \
-#     && chmod +x /opt/$SEQDIR/seqcli \
-#     && alias seqcli=/opt/$SEQDIR/seqcli \
-#     && rm seqcli.tar.gz
+RUN wget -q -O seqcli.tar.gz https://github.com/datalust/seqcli/releases/download/v2020.4.365/seqcli-2020.4.365-linux-x64.tar.gz
+RUN mkdir -p /temp/seqcli
+RUN tar -xf seqcli.tar.gz -C /temp/seqcli
+RUN mkdir /opt/seqcli
+RUN cp -a /temp/seqcli/$(ls /temp/seqcli | grep -m 1 seqcli)/. /opt/seqcli
+RUN chmod +x /opt/seqcli/seqcli
+RUN rm seqcli.tar.gz && rm -r /temp/seqcli
+ENV PATH="/opt/seqcli/:${PATH}"
 
 ARG SEQ_URL="http://seq.ius-infrastructure.svc.cluster.local:5341"
 RUN seqcli config -k connection.serverUrl -v $SEQ_URL
