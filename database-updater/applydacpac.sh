@@ -33,6 +33,8 @@ cd /dacpac/${foldername}/
 dacpacFilename=`ls | grep -i ".dacpac"`
 folderpath=$(pwd)
 
+DACPACGUID=$(uuidgen)
+
 echo $dacpacFilename
-/opt/sqlpackage/sqlpackage /Action:Publish /SourceFile:"$folderpath/$dacpacFilename" /TargetServerName:"${SQL_SERVER_URL},${SQL_SERVER_PORT}" /TargetDatabaseName:"${SERVICE_DATABASE_NAME}" /TargetUser:"${SQL_USERNAME}" /TargetPassword:"${SQL_PASSWORD}" /p:AllowIncompatiblePlatform=true /p:BlockOnPossibleDataLoss=false /TargetTimeout:120 | seqcli ingest -a 3DNz8nBJEk76T68Yzj7M -p ServiceName=${SERVICE_NAME} -p ArtifactVersion=${ARTIFACT_VERSION}
+/opt/sqlpackage/sqlpackage /Action:Publish /SourceFile:"$folderpath/$dacpacFilename" /TargetServerName:"${SQL_SERVER_URL},${SQL_SERVER_PORT}" /TargetDatabaseName:"${SERVICE_DATABASE_NAME}" /TargetUser:"${SQL_USERNAME}" /TargetPassword:"${SQL_PASSWORD}" /p:AllowIncompatiblePlatform=true /p:BlockOnPossibleDataLoss=false /TargetTimeout:120 | seqcli ingest -a 3DNz8nBJEk76T68Yzj7M -p ServiceName=${SERVICE_NAME} -p ArtifactVersion=${ARTIFACT_VERSION} -p DacpacGuid=$DACPACGUID
 checkstatus $?
