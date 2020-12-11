@@ -3,7 +3,8 @@ RUN apt-get update
 RUN apt-get install -y \
     libunwind8 \
     unzip \ 
-    wget 
+    wget \
+    uuid-runtime
 
 # Install SQLPackage for Linux and make it executable
 RUN wget -progress=bar:force -q -O sqlpackage.zip https://go.microsoft.com/fwlink/?linkid=873926 \
