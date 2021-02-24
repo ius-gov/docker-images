@@ -1,6 +1,9 @@
 #!/bin/bash
-
 set -e
+if [ "$DEBUG_TRUE" == "True"]
+then
+  set -x
+fi
 
 checkstatus(){
 
