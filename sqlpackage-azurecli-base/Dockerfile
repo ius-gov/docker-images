@@ -7,7 +7,7 @@ RUN apt-get install -y \
     uuid-runtime
 
 # Install SQLPackage for Linux and make it executable
-RUN wget -progress=bar:force -q -O sqlpackage.zip https://go.microsoft.com/fwlink/?linkid=2143497 \
+RUN wget -progress=bar:force -q -O sqlpackage.zip https://aka.ms/sqlpackage-linux \
     && unzip -qq sqlpackage.zip -d /opt/sqlpackage \
     && chmod +x /opt/sqlpackage/sqlpackage \
     && rm sqlpackage.zip 
