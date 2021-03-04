@@ -28,7 +28,8 @@ RUN seqcli config -k connection.serverUrl -v $SEQ_URL
 
 #Install Azure CLI for access to universal packages
 RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash && apt-get clean up all the garbage leftover
-RUN pip install --upgrade pip --target /opt/az/lib/python3.6/site-packages/
+RUN apt-get install python3-pip -y
+RUN python3 -m pip install --upgrade pip --target /opt/az/lib/python3.6/site-packages/
 
 RUN az extension add --name azure-devops
 ARG AZURE_URL="https://dev.azure.com/iusdev/"
