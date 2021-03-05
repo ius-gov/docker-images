@@ -1,6 +1,9 @@
 #!/bin/bash
-
 set -e
+if [ "$DEBUG_TRUE" == "True" ]
+then
+  set -x
+fi
 
 checkstatus(){
 
@@ -14,7 +17,7 @@ fi
 # Doing az devops login to download the artifcat from feed
 #Fetching DB name to pass to sql package command.
 
-SERVICE_DATABASE_NAME=`python fetchdbname.py --appsettingsFilePath "/app/appsettings/appsettings.idaho.development.json" --CannonicalApplicationName ${SERVICE_NAME}`
+SERVICE_DATABASE_NAME=`python fetchdbname.py --appsettingsFilePath "/app/appsettings/appsettings.${ClientStateName}.development.json" --CannonicalApplicationName ${SERVICE_NAME}`
 checkstatus $?
 
 echo ${PAT_TOKEN} | az devops login
