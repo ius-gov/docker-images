@@ -1,0 +1,42 @@
+FROM iusdev.azurecr.io/dotnet-runtime-net5:latest AS base
+
+# We need libgdiplus, libc6-dev packages for Aspec pdf library to work on docker containers. Reference https://github.com/JanKallman/EPPlus/issues/83
+RUN apt-get update && apt-get install -y apt-utils libgdiplus libc6-dev
+
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+
+FROM iusdev.azurecr.io/{{docker-build-image}}:latest AS build
+ARG version=0.0.0
+WORKDIR /src
+COPY ["NuGet.Config", "src/"]
+
+{{#projects}}    
+COPY {{{.}}}/*.csproj {{{.}}}/
+{{/projects}}
+
+RUN echo "Setting Version To $version" && \
+    find src/ -type f -iname '*.csproj' -exec  sed -i "s/0\.0\.0\-INTERNAL/$version/g" "{}" \; && \
+    grep "<VersionPrefix>.*</VersionPrefix>" -R .
+
+RUN dotnet restore {{{entry_project_directory}}}/{{entry_project_name}}.csproj
+
+RUN python /data/post_restore.py --base_path $(pwd) --state_code {{state_code}}
+
+COPY . .
+WORKDIR {{{entry_project_directory}}}
+RUN dotnet build "{{entry_project_name}}.csproj" -c Release --no-restore
+
+FROM build AS publish
+RUN dotnet publish "{{entry_project_name}}.csproj" -c Release -o /app --no-build
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app .
+{{#entry_project_dll_name}}
+ENTRYPOINT ["dotnet", "{{entry_project_dll_name}}.dll"]
+{{/entry_project_dll_name}}
+{{^entry_project_dll_name}}
+ENTRYPOINT ["dotnet", "{{entry_project_name}}.dll"]
+{{/entry_project_dll_name}}
